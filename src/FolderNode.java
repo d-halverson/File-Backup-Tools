@@ -13,9 +13,9 @@ public class FolderNode extends Node {
 	/**
 	 * Constructor that simply calls super constructor and passes the strings.
 	 * @param path String of the path of the file this node is representing.
-	 * @param parent String of the path of the parent this node has.
+	 * @param parent Node of the parent.
 	 */
-	public FolderNode(String path, String parent) {
+	public FolderNode(String path, Node parent) {
 		super(path, parent);
 		this.children = new ArrayList<Node>();
 	}
@@ -23,9 +23,9 @@ public class FolderNode extends Node {
 	/**
 	 * Constructor that simply calls super constructor and passes the Files.
 	 * @param path the File this node is representing.
-	 * @param parent File of the parent this node has.
+	 * @param parent Node of the parent.
 	 */
-	public FolderNode(File path, File parent) {
+	public FolderNode(File path, Node parent) {
 		super(path, parent);
 		this.children = new ArrayList<Node>();
 	}
@@ -33,10 +33,10 @@ public class FolderNode extends Node {
 	/**
 	 * Same as first constructor except it is passed an ArrayList for the children.
 	 * @param path String of the path of the file this node is representing.
-	 * @param parent String of the path of the parent this node has.
+	 * @param parent Node of the parent.
 	 * @param children a list of Children this folder has.
 	 */
-	public FolderNode(String path, String parent, ArrayList<Node> children) {
+	public FolderNode(String path, Node parent, ArrayList<Node> children) {
 		super(path, parent);
 		this.children = children;
 	}
@@ -44,10 +44,10 @@ public class FolderNode extends Node {
 	/**
 	 * Same as second constructor except it is passed an ArrayList for the children.
 	 * @param path File of the path of the file this node is representing.
-	 * @param parent File of the path of the parent this node has.
+	 * @param parent Node of the parent.
 	 * @param children a list of Children this folder has.
 	 */
-	public FolderNode(File path, File parent, ArrayList<Node> children) {
+	public FolderNode(File path, Node parent, ArrayList<Node> children) {
 		super(path, parent);
 		this.children = children;
 	}
