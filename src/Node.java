@@ -10,7 +10,7 @@ public abstract class Node {
 
 	private int numOfChild = 0;
 	private File path;
-	private File parent;
+	private Node parent;
 
 	/**
 	 * This constructor creates a new File object from the String it was passed and
@@ -21,8 +21,8 @@ public abstract class Node {
 	 * @param parent A String that represents the pathname of the File of the parent
 	 *               this Node will hold.
 	 */
-	public Node(String path, String parent) {
-		this(new File(path), new File(parent));
+	public Node(String path, Node parent) {
+		this(new File(path), parent);
 	}
 
 	/**
@@ -31,7 +31,7 @@ public abstract class Node {
 	 * @param path   A File that this Node will represent.
 	 * @param parent A File that is the parent of this Node.
 	 */
-	public Node(File path, File parent) {
+	public Node(File path, Node parent) {
 		/*
 		 * Commented this error check out, not sure if I want to have this done yet,
 		 * will come back later.
@@ -55,10 +55,18 @@ public abstract class Node {
 	/**
 	 * Accessor method for the parent instance variable.
 	 * 
-	 * @return returns the parent File.
+	 * @return returns the parent Node.
 	 */
-	public File getParent() {
+	public Node getParent() {
 		return this.parent;
+	}
+	
+	/**
+	 * Accessor method for the File stored in the parent Node instance field.
+	 * @return returns the File object stored in parent.
+	 */
+	public File getParentPath() {
+		return getParent().getPath();
 	}
 
 	/**
