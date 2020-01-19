@@ -40,11 +40,6 @@ public abstract class Node {
 		 * IllegalArgumentException("This File does not exist, and a node cannot be created."
 		 * ); }
 		 * 
-		 * if(!parent.exists()){ throw new
-		 * IllegalArgumentException("The parent File does not exist, node cannot be created."
-		 * ); }
-		 * 
-		 * 
 		 * Need to add @throws to doc if uncomment this****
 		 */
 
