@@ -76,5 +76,18 @@ public class FolderNode extends Node {
 		setNumOfChild(getNumOfChild()+1);
 	}
 	
+	/**
+	 * Helper method that returns true if the node parameter is a FolderNode type, not a FileNode.
+	 * @param node the Node to be checked.
+	 * @return returns true if node is a FolderNode object.
+	 */
+	public static boolean isFolderNode(Node node) {
+		FolderNode temp = new FolderNode("Hi", null);
+		if(temp.getClass() == node.getClass())
+			return true;
+		else
+			return false;
+	}
+	
 
 }
