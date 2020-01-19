@@ -113,20 +113,6 @@ public class FileTree {
 		
 		return false;
 	}
-	
-	/**
-	 * Private helper method that returns true if the file is found in list based on the equals method in FileNode class.
-	 * @param file the File to search for
-	 * @param list
-	 * @return
-	 */
-	private static boolean isFileInList(File file, File[] list) {
-		for(int i=0; i<list.length; i++) {
-			if(list[i].equals(file))
-				return true;
-		}
-		return false;
-	}
 
 }
 
