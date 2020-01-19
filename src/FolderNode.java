@@ -62,6 +62,14 @@ public class FolderNode extends Node {
 	}
 	
 	/**
+	 * Accessor for the children instance field.
+	 * @return returns the children list.
+	 */
+	public ArrayList<Node> getChildren(){
+		return this.children;
+	}
+	
+	/**
 	 * Increases the number of children instance field by one, used when adding a child.
 	 */
 	private void incrNumOfChild() {
