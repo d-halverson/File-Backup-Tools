@@ -28,4 +28,23 @@ public class FileNode extends Node {
 		super(path, parent);
 	}
 
+	/**
+	 * Returns true if this Node equals the formal parameter according to these
+	 * rules: the nodes must have the same file name, and must have the same file
+	 * size. This check for equality has nothing to do with the pathname or location
+	 * of the file.
+	 * 
+	 * @param node the Node that is being checked for equality.
+	 * @return returns true if nodes are equal, false otherwise.
+	 */
+	public boolean equals(Node node) {
+		if(!this.getPath().getName().equals(node.getPath().getName())) {
+			return false;
+		}
+		else if(!(this.getPath().length()!=node.getPath().length()) ) {
+			return false;
+		}
+		else
+			return true;
+	}
 }
