@@ -12,7 +12,8 @@ public class FileNode extends Node {
 
 	/**
 	 * Basic constructor that calls the super constructor.
-	 * @param path String of the path that leads to this file.
+	 * 
+	 * @param path   String of the path that leads to this file.
 	 * @param parent Node of the parent.
 	 */
 	public FileNode(String path, Node parent) {
@@ -21,7 +22,8 @@ public class FileNode extends Node {
 
 	/**
 	 * Basic constructor that calls the super constructor.
-	 * @param path File that this Node represents.
+	 * 
+	 * @param path   File that this Node represents.
 	 * @param parent Node of the parent.
 	 */
 	public FileNode(File path, Node parent) {
@@ -37,14 +39,24 @@ public class FileNode extends Node {
 	 * @param node the Node that is being checked for equality.
 	 * @return returns true if nodes are equal, false otherwise.
 	 */
-	public boolean equals(Node node) {
-		if(!this.getPath().getName().equals(node.getPath().getName())) {
+	public boolean equals(FileNode node) {
+		if (!this.getPath().getName().equals(node.getPath().getName())) {
 			return false;
-		}
-		else if(!(this.getPath().length()!=node.getPath().length()) ) {
+		} else if (!(this.getPath().length() != node.getPath().length())) {
 			return false;
-		}
-		else
+		} else
 			return true;
+	}
+
+	/**
+	 * Another option for an equals method that accepts File object as input rather
+	 * than FileNode. Simply calls the other version of the equals method and passes
+	 * it a new temporary FileNode.
+	 * 
+	 * @param file the File that is being searched for.
+	 * @return returns true if nodes are equal, false otherwise.
+	 */
+	public boolean equals(File file) {
+		return this.equals(new FileNode(file, null));
 	}
 }

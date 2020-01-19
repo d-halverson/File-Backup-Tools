@@ -55,9 +55,10 @@ public abstract class Node {
 	public Node getParent() {
 		return this.parent;
 	}
-	
+
 	/**
 	 * Accessor method for the File stored in the parent Node instance field.
+	 * 
 	 * @return returns the File object stored in parent.
 	 */
 	public File getParentPath() {
@@ -91,13 +92,14 @@ public abstract class Node {
 	public boolean hasParent() {
 		return getParent() != null;
 	}
-	
+
 	/**
-	 * Mutator method for the numOfChild instance field. Protected so that the FolderNode class can still access it.
+	 * Mutator method for the numOfChild instance field. Protected so that the
+	 * FolderNode class can still access it.
+	 * 
 	 * @param num the new value of numOfChild.
 	 */
 	protected void setNumOfChild(int num) {
 		this.numOfChild = num;
 	}
-
 }
