@@ -65,7 +65,20 @@ public class FileTree {
 		File[] curFiles;
 		ArrayList<FolderNode> nodesToCheck = new ArrayList<FolderNode>();
 		FolderNode tempNode;
+		
+		cur = this.root;
+		curFiles = cur.getPath().listFiles();
 
+		for (int i = 0; i < curFiles.length; i++) {
+			if (curFiles[i].isFile()) {
+				cur.addChild(new FileNode(curFiles[i], cur));
+			} else {
+				tempNode = new FolderNode(curFiles[i], cur);
+				cur.addChild(tempNode);
+				nodesToCheck.add(tempNode);
+			}
+		}
+		
 		while (!nodesToCheck.isEmpty()) {
 
 			cur = nodesToCheck.get(0);
@@ -98,12 +111,16 @@ public class FileTree {
 		FileNode temp2;
 		
 		while(!nodesToTraverse.isEmpty() && nodesToTraverse!=null) {
-			if(!FolderNode.isFolderNode(nodesToTraverse.get(0))) {
+			if(FolderNode.isFolderNode(nodesToTraverse.get(0))) {
+				nodesToTraverse.addAll( ((FolderNode)nodesToTraverse.get(0)).getChildren() );
+			}
+			else { //FileNode was found
 				temp2 = (FileNode)nodesToTraverse.get(0);
 				if(temp2.equals(file)) {
 					return true;
 				}
 			}
+			nodesToTraverse.remove(0);
 		}
 		
 		return false;
