@@ -1,5 +1,4 @@
 import java.io.File;
-import java.nio.file.Files;
 import java.util.ArrayList;
 
 /**
@@ -96,14 +95,10 @@ public class FileTree {
 	 */
 	public boolean contains(FileNode file) {
 		ArrayList<Node> nodesToTraverse = this.root.getChildren();
-		FolderNode temp;
 		FileNode temp2;
 		
 		while(!nodesToTraverse.isEmpty() && nodesToTraverse!=null) {
-			if(FolderNode.isFolderNode(nodesToTraverse.get(0))) {
-				temp = (FolderNode)nodesToTraverse.get(0);
-			}
-			else {
+			if(!FolderNode.isFolderNode(nodesToTraverse.get(0))) {
 				temp2 = (FileNode)nodesToTraverse.get(0);
 				if(temp2.equals(file)) {
 					return true;
