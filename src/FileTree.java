@@ -125,6 +125,15 @@ public class FileTree {
 		
 		return false;
 	}
+	
+	/**
+	 * Accessor method for the root instance field.
+	 * 
+	 * @return the root of this tree.
+	 */
+	public FolderNode getRoot() {
+		return this.root;
+	}
 
 }
 
