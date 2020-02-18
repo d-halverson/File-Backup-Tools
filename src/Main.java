@@ -6,8 +6,8 @@ public class Main {
 	public static void main(String[] args) {
 		FileTree tree = new FileTree("/Users/drewhalverson/Desktop/Tree1");
 		FileTree tree2 = new FileTree("/Users/drewhalverson/Desktop/Tree2");
-		FileNode node = new FileNode("terminal.png", null);
-		//System.out.println("\n"+tree.contains(node));
+		FileNode node = new FileNode("/Users/drewhalverson/Desktop/Tree2/terminal.png", null);
+		System.out.println("\n"+tree.contains(node));
 		ArrayList<File> extraFiles = tree.findExtraFiles(tree2);
 		printArray(extraFiles);
 		

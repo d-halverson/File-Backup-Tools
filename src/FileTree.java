@@ -107,7 +107,7 @@ public class FileTree {
 	 * @return Returns true if the file was found, false otherwise.
 	 */
 	public boolean contains(FileNode file) {
-		ArrayList<Node> nodesToTraverse = this.root.getChildren();
+		ArrayList<Node> nodesToTraverse = (ArrayList<Node>) this.root.getChildren().clone();
 		FileNode temp2;
 		
 		while(!nodesToTraverse.isEmpty() && nodesToTraverse!=null) {
@@ -127,7 +127,7 @@ public class FileTree {
 	}
 	
 	public ArrayList<File> findExtraFiles(FileTree tree2) {
-		ArrayList<Node> nodesToTraverse = tree2.root.getChildren();
+		ArrayList<Node> nodesToTraverse = (ArrayList<Node>) tree2.root.getChildren().clone();
 		FileNode tempFile;
 		ArrayList<File> extraFiles = new ArrayList<File>();
 		
