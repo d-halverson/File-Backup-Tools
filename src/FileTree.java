@@ -126,12 +126,33 @@ public class FileTree {
 		return false;
 	}
 	
+	public ArrayList<File> findExtraFiles(FileTree tree2) {
+		ArrayList<Node> nodesToTraverse = tree2.root.getChildren();
+		FileNode tempFile;
+		ArrayList<File> extraFiles = new ArrayList<File>();
+		
+		while(!nodesToTraverse.isEmpty()) {
+			if(FolderNode.isFolderNode(nodesToTraverse.get(0))) {
+				nodesToTraverse.addAll( ((FolderNode)nodesToTraverse.get(0)).getChildren() );
+			}
+			else { //FileNode was found
+				tempFile = (FileNode)nodesToTraverse.get(0);
+				if(!this.contains(tempFile)) { //if the file found in tree2 was not found in this tree, it is extra
+					extraFiles.add(tempFile.getPath());
+				}
+			}
+			nodesToTraverse.remove(0);
+		}
+		
+		return extraFiles;
+	}
+	
 	/**
 	 * Accessor method for the root instance field.
 	 * 
 	 * @return the root of this tree.
 	 */
-	public FolderNode getRoot() {
+	protected FolderNode getRoot() {
 		return this.root;
 	}
 

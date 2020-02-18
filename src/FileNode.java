@@ -42,7 +42,7 @@ public class FileNode extends Node {
 	public boolean equals(FileNode node) {
 		if (!this.getPath().getName().equals(node.getPath().getName())) {
 			return false;
-		} else if (!(this.getPath().length() != node.getPath().length())) {
+		} else if (this.getPath().length() != node.getPath().length()) {
 			return false;
 		} else
 			return true;
