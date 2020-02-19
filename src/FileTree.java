@@ -49,7 +49,11 @@ public class FileTree {
 	private void checkFile(File root) {
 		if (root == null) {
 			throw new IllegalArgumentException("Root cannot be null.");
-		} else if (root.isFile()) {
+		}
+		else if(!root.exists()) {
+			throw new IllegalArgumentException("File given doesn't exist.");
+		}
+		else if (root.isFile()) {
 			throw new IllegalArgumentException(
 					"Cannot create a FileTree with a root that points to a file and not a directory.");
 		}
