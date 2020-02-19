@@ -4,7 +4,7 @@ This project will provide various tools to manage a file backup system. It is cu
 Information on running in Terminal: 
 - Install latest version of JDK from Oracle's website
 - Change your working directory to be in the bin folder of this project
-- Run the command: "java BackupTools"
+- Run the command: ```java BackupTools```
 - Follow onscreen instructions. 
 
 
