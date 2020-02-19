@@ -11,3 +11,6 @@ Information on running in Terminal:
 
 
 Disclaimer: Be careful! Run at your own risk, and only point to folders that you are ok with potentially losing data in if you want to test my project and be safe.
+
+Known Bugs:
+-If you try to give the root of a hard drive as a source or backup folder, the program will crash. Right now the only workaround is to put everything you want into a folder at the top of the drive and then point to that folder in the script.
