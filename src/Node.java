@@ -54,7 +54,7 @@ public abstract class Node implements Comparable<Node> {
 	 */
 	@Override
 	public int compareTo(Node other) {
-		return this.getPath().getName().compareTo(other.getPath().getName());
+		return this.getPath().getName().compareToIgnoreCase(other.getPath().getName());
 	}
 
 	/**
