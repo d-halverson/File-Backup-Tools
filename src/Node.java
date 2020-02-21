@@ -50,7 +50,7 @@ public abstract class Node implements Comparable<Node> {
 	/**
 	 * CompareTo method that implements Comparable interface by comparing the files' string names
 	 * @param other the other Node that is being compared to this node.
-	 * @return returns a positive number if this Node is earlier alphabetically than the other node
+	 * @return returns a negative number if this Node is earlier alphabetically than the other node
 	 */
 	@Override
 	public int compareTo(Node other) {
