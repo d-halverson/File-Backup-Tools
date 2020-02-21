@@ -6,7 +6,7 @@
  * 
  * @author drewhalverson
  */
-public abstract class Node {
+public abstract class Node implements Comparable<Node> {
 
 	private int numOfChild = 0;
 	private File path;
@@ -45,6 +45,16 @@ public abstract class Node {
 
 		this.path = path;
 		this.parent = parent;
+	}
+	
+	/**
+	 * CompareTo method that implements Comparable interface by comparing the files' string names
+	 * @param other the other Node that is being compared to this node.
+	 * @return returns a positive number if this Node is earlier alphabetically than the other node
+	 */
+	@Override
+	public int compareTo(Node other) {
+		return this.getPath().getName().compareTo(other.getPath().getName());
 	}
 
 	/**
