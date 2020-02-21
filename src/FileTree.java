@@ -147,7 +147,6 @@ public class FileTree {
 			}
 			nodesToTraverse.remove(0);
 		}
-		
 		return extraFiles;
 	}
 	
@@ -161,5 +160,3 @@ public class FileTree {
 	}
 
 }
-
-//check to see if nodes have parents, throw error if they don't and are not the root.
