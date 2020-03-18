@@ -50,4 +50,6 @@ class FileTreeTest {
 		assertTrue(tree1.contains(doggy));
 		assertFalse(tree1.contains(Doggy));
 	}
+	
+	
 }
