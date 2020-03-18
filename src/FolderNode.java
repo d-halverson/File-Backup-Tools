@@ -64,7 +64,9 @@ public class FolderNode extends Node {
 	 */
 	public void addChild(Node node) {
 		int i = (this.getNumOfChild() / 2) - 1;
-		boolean done = false;
+		if(i<0)
+			i = 0;
+		boolean done = (i==0 || i== this.getNumOfChild() -1);
 
 		while (!done) {
 			// if index is at the beginning or end of the list, the location is right.

@@ -158,5 +158,30 @@ public class FileTree {
 	protected FolderNode getRoot() {
 		return this.root;
 	}
+	
+	/**
+	 * Computes the similarity of the two String parameters and returns it as an integer.
+	 * 
+	 * This currently just returns a very simple computation of whether or not the characters in each string are
+	 * the same in the same place (not case sensitive) and adds a point if the strings are close in length
+	 * 
+	 * @param first the first string being compared
+	 * @param second the second string being compared
+	 * @return a score of similarity, 0 being the lowest possible score.
+	 */
+	public static int compareStrings(String first, String second) {
+		int result = 0;
+		
+		if(Math.abs(first.length() - second.length()) <= 2) //if strings are the same length +-2
+			result++;
+		
+		for(int i = 0; i<first.length() && i<second.length(); i++) {
+			if(first.substring(i, i+1).equalsIgnoreCase(second.substring(i, i+1))) {
+				result++;
+			}
+		}
+		
+		return result;
+	}
 
 }
