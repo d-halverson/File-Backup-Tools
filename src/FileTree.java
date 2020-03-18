@@ -109,8 +109,12 @@ public class FileTree {
 	 * 
 	 * @param file the FileNode object that will be searched for.
 	 * @return Returns true if the file was found, false otherwise.
+	 * @throws IllegalArgumentException when file is null
 	 */
 	public boolean contains(FileNode file) {
+		if(file == null)
+			throw new IllegalArgumentException("file is null");
+		
 		ArrayList<Node> nodesToTraverse = (ArrayList<Node>) this.root.getChildren().clone();
 		FileNode temp2;
 		
