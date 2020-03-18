@@ -3,37 +3,22 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class BackupTools {
+	
+	private final static Scanner input = new Scanner(System.in);
 
 	public static void main(String[] args) {
-		final Scanner input = new Scanner(System.in);
+		
 		FileTree source = null;
 		FileTree backup = null;
-		boolean failed = true;
-
+		
 		// getting source filetree
-		while (failed == true) {
-			System.out.print("Please input a \"source\" path pointing a folder:");
-			try {
-				source = new FileTree(input.nextLine());
-				failed = false;
-			} catch (IllegalArgumentException e) {
-				System.out.println("Error: " + e.getMessage() + " Please try again.");
-				failed = true;
-			}
-		}
+		System.out.print("Please input a \"source\" path pointing a folder:");
+		setTreeFromInput(source);
 
 		// getting backup filetree
-		failed = true;
-		while (failed == true) {
-			System.out.print("Now input a \"backup\" path pointing to a folder:");
-			try {
-				backup = new FileTree(input.nextLine());
-				failed = false;
-			} catch (IllegalArgumentException e) {
-				System.out.println("Error: " + e.getMessage() + " Please try again.");
-				failed = true;
-			}
-		}
+		System.out.print("Now input a \"backup\" path pointing to a folder:");
+		setTreeFromInput(backup);
+		
 
 		System.out.println("\nChecking for extra files...");
 		ArrayList<File> extraFiles = source.findExtraFiles(backup);
@@ -65,6 +50,26 @@ public class BackupTools {
 			System.out.println("Ok, not deleting.");
 		}
 			
+	}
+	
+	/**
+	 * Continues a loop to get valid input from the user, and then uses that input to generate
+	 * a FileTree object and stores it in the parameter reference provided.
+	 * 
+	 * @param tree where the FileTree generated will be stored.
+	 */
+	private static void setTreeFromInput(FileTree tree) {
+		boolean failed = true;
+		
+		while (failed == true) {
+			try {
+				tree = new FileTree(input.nextLine());
+				failed = false;
+			} catch (IllegalArgumentException e) {
+				System.out.println("Error: " + e.getMessage() + " Please try again.");
+				failed = true;
+			}
+		}
 	}
 
 	/**
