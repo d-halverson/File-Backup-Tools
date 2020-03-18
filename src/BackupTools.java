@@ -8,18 +8,25 @@ public class BackupTools {
 
 	public static void main(String[] args) {
 		
-		FileTree source = null;
-		FileTree backup = null;
-		
-		// getting source filetree
+		FileTree source = null; //getting source FileTree
 		System.out.print("Please input a \"source\" path pointing a folder:");
 		setTreeFromInput(source);
 
-		// getting backup filetree
+		FileTree backup = null; //getting backup FileTree
 		System.out.print("Now input a \"backup\" path pointing to a folder:");
 		setTreeFromInput(backup);
-		
 
+		
+		input.close();
+	}
+	
+	/**
+	 * Called when the user wants to find extra files in the backup fileTree.
+	 * 
+	 * @param source the source filetree
+	 * @param backup the backup filetree
+	 */
+	private static void findExtraFilesFront(FileTree source, FileTree backup) {
 		System.out.println("\nChecking for extra files...");
 		ArrayList<File> extraFiles = source.findExtraFiles(backup);
 		System.out.println("Extra files found in \"" + 
@@ -36,8 +43,8 @@ public class BackupTools {
 			System.out.print("Please type yes, y, no, or n:");
 			tempInput = input.nextLine();
 		}
-		input.close();
 		
+		//deleting
 		if(tempInput.equalsIgnoreCase("yes") || tempInput.equalsIgnoreCase("y")) {
 			boolean success = deleteFiles(extraFiles);
 			
@@ -49,7 +56,6 @@ public class BackupTools {
 		else if(tempInput.equalsIgnoreCase("no") || tempInput.equalsIgnoreCase("n")) {
 			System.out.println("Ok, not deleting.");
 		}
-			
 	}
 	
 	/**
