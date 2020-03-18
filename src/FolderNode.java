@@ -57,43 +57,12 @@ public class FolderNode extends Node {
 	}
 
 	/**
-	 * Mutator method for the children instance variable. Adds a node to the list,
-	 * maintaining alphabetical order.
+	 * Mutator method for the children instance variable. Adds a node to the list.
 	 * 
 	 * @param node the object to be added to the list.
 	 */
 	public void addChild(Node node) {
-		int i = (this.getNumOfChild() / 2) - 1;
-		if(i<0)
-			i = 0;
-		boolean done = (i==0 || i== this.getNumOfChild() -1);
-
-		while (!done) {
-			// if index is at the beginning or end of the list, the location is right.
-			if (i == 0)
-				done = true;
-			if (i == this.getNumOfChild() - 1)
-				done = true;
-
-			if (node.compareTo(this.getChildren().get(i)) < 0) {
-
-				if (node.compareTo(getChildren().get(i - 1)) > 0)
-					done = true;
-				else
-					i = i / 2;
-			}
-
-			// node.compareTo( item at i) >0 then
-			else {
-				if (node.compareTo(getChildren().get(i + 1)) < 0)
-					done = true;
-				else
-					i = ((getNumOfChild() - (i + 1)) / 2) + (i + 1);
-			}
-
-		}
-
-		this.children.add(i, node);
+		this.children.add(node);
 		incrNumOfChild();
 	}
 
