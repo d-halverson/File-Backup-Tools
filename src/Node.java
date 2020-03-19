@@ -69,10 +69,27 @@ public abstract class Node implements Comparable<Node> {
 	/**
 	 * Accessor method for the File stored in the parent Node instance field.
 	 * 
+	 * Precondition: only call when parent is not null.
+	 * 
 	 * @return returns the File object stored in parent.
 	 */
-	public File getParentPath() {
+	private File getParentPath() {
 		return getParent().getPath();
+	}
+	
+	/**
+	 * Accessor method that returns a string of the name of this node's parent. Returns a zero length string
+	 * if this node's parent is null.
+	 * 
+	 * @return returns the filename of this node's parent string.
+	 */
+	public String getParentPathString() {
+		if(getParent()==null) {
+			return "";
+		}
+		else {
+			return getParentPath().getName();
+		}
 	}
 
 	/**
