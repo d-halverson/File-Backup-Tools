@@ -49,11 +49,9 @@ public class FileTree {
 	private void checkFile(File root) {
 		if (root == null) {
 			throw new IllegalArgumentException("Root cannot be null.");
-		}
-		else if(!root.exists()) {
+		} else if (!root.exists()) {
 			throw new IllegalArgumentException("File given doesn't exist.");
-		}
-		else if (root.isFile()) {
+		} else if (root.isFile()) {
 			throw new IllegalArgumentException(
 					"Cannot create a FileTree with a root that points to a file and not a directory.");
 		}
@@ -69,7 +67,7 @@ public class FileTree {
 		File[] curFiles;
 		ArrayList<FolderNode> nodesToCheck = new ArrayList<FolderNode>();
 		FolderNode tempNode;
-		
+
 		cur = this.root;
 		curFiles = cur.getPath().listFiles();
 
@@ -82,7 +80,7 @@ public class FileTree {
 				nodesToCheck.add(tempNode);
 			}
 		}
-		
+
 		while (!nodesToCheck.isEmpty()) {
 
 			cur = nodesToCheck.get(0);
@@ -112,46 +110,76 @@ public class FileTree {
 	 * @throws IllegalArgumentException when file is null
 	 */
 	public boolean contains(FileNode file) {
-		if(file == null)
+		if (file == null)
 			throw new IllegalArgumentException("file is null");
-		
+
 		ArrayList<Node> nodesToTraverse = (ArrayList<Node>) this.root.getChildren().clone();
+		FolderNode temp;
 		FileNode temp2;
-		
-		while(!nodesToTraverse.isEmpty() && nodesToTraverse!=null) {
-			if(FolderNode.isFolderNode(nodesToTraverse.get(0))) {
-				nodesToTraverse.addAll( ((FolderNode)nodesToTraverse.get(0)).getChildren() );
-			}
-			else { //FileNode was found
-				temp2 = (FileNode)nodesToTraverse.get(0);
-				if(temp2.equals(file)) {
+
+		while (!nodesToTraverse.isEmpty() && nodesToTraverse != null) {
+			if (FolderNode.isFolderNode(nodesToTraverse.get(0))) {
+				//computing score and index and using it to add Folder's children:
+				int index;
+				temp = (FolderNode) nodesToTraverse.get(0);
+				if(compareStrings(temp.getPath().getPath(), file.getPath().getPath()) >= 3) {
+					index = 0;
+				}
+				else {
+					index = nodesToTraverse.size()-1;
+					if(index < 0)
+						index = 0;
+				}
+				addChildrenList(nodesToTraverse, temp.getChildren(), index);
+				
+			} else { // FileNode was found
+				temp2 = (FileNode) nodesToTraverse.get(0);
+				if (temp2.equals(file)) {
 					return true;
 				}
 			}
 			nodesToTraverse.remove(0);
 		}
-		
+
 		return false;
 	}
-	
+
+	/**
+	 * Private helper method that adds all of the Nodes in newChildren list to the
+	 * nodesToTraverse list. This method was created to replace the addAll method of
+	 * the ArrayList class in order to use the compareStrings() method in order to
+	 * traverse "smartly". Adds all of the items beginning at the index provided.
+	 * 
+	 * Precondition: index must be >= 0 and < nodesToTraverse.size()
+	 * 
+	 * @param nodesToTraverse the list of nodes that are being traversed.
+	 * @param newChildren the list of nodes being added to nodesToTraverse
+	 * @param index the index of nodesToTraverse at which the newChildren items will be added.
+	 */
+	private static void addChildrenList(ArrayList<Node> nodesToTraverse, ArrayList<Node> newChildren, int index) {
+		for(int i = 0; i<newChildren.size(); i++) {
+			nodesToTraverse.add(index, newChildren.get(i));
+		}
+	}
+
 	/**
 	 * Finds extra files that are in tree2 and not in this tree.
 	 * 
 	 * @param tree2 the tree being compared to this tree
-	 * @return returns an array list of File objects that are the extra files that were found.
+	 * @return returns an array list of File objects that are the extra files that
+	 *         were found.
 	 */
 	public ArrayList<File> findExtraFiles(FileTree tree2) {
 		ArrayList<Node> nodesToTraverse = (ArrayList<Node>) tree2.root.getChildren().clone();
 		FileNode tempFile;
 		ArrayList<File> extraFiles = new ArrayList<File>();
-		
-		while(!nodesToTraverse.isEmpty()) {
-			if(FolderNode.isFolderNode(nodesToTraverse.get(0))) {
-				nodesToTraverse.addAll( ((FolderNode)nodesToTraverse.get(0)).getChildren() );
-			}
-			else { //FileNode was found
-				tempFile = (FileNode)nodesToTraverse.get(0);
-				if(!this.contains(tempFile)) { //if the file found in tree2 was not found in this tree, it is extra
+
+		while (!nodesToTraverse.isEmpty()) {
+			if (FolderNode.isFolderNode(nodesToTraverse.get(0))) {
+				nodesToTraverse.addAll(((FolderNode) nodesToTraverse.get(0)).getChildren());
+			} else { // FileNode was found
+				tempFile = (FileNode) nodesToTraverse.get(0);
+				if (!this.contains(tempFile)) { // if the file found in tree2 was not found in this tree, it is extra
 					extraFiles.add(tempFile.getPath());
 				}
 			}
@@ -159,7 +187,7 @@ public class FileTree {
 		}
 		return extraFiles;
 	}
-	
+
 	/**
 	 * Accessor method for the root instance field.
 	 * 
@@ -168,29 +196,31 @@ public class FileTree {
 	protected FolderNode getRoot() {
 		return this.root;
 	}
-	
+
 	/**
-	 * Computes the similarity of the two String parameters and returns it as an integer.
+	 * Computes the similarity of the two String parameters and returns it as an
+	 * integer.
 	 * 
-	 * This currently just returns a very simple computation of whether or not the characters in each string are
-	 * the same in the same place (not case sensitive) and adds a point if the strings are close in length
+	 * This currently just returns a very simple computation of whether or not the
+	 * characters in each string are the same in the same place (not case sensitive)
+	 * and adds a point if the strings are close in length
 	 * 
-	 * @param first the first string being compared
+	 * @param first  the first string being compared
 	 * @param second the second string being compared
 	 * @return a score of similarity, 0 being the lowest possible score.
 	 */
 	public static int compareStrings(String first, String second) {
 		int result = 0;
-		
-		if(Math.abs(first.length() - second.length()) <= 2) //if strings are the same length +-2
+
+		if (Math.abs(first.length() - second.length()) <= 2) // if strings are the same length +-2
 			result++;
-		
-		for(int i = 0; i<first.length() && i<second.length(); i++) {
-			if(first.substring(i, i+1).equalsIgnoreCase(second.substring(i, i+1))) {
+
+		for (int i = 0; i < first.length() && i < second.length(); i++) {
+			if (first.substring(i, i + 1).equalsIgnoreCase(second.substring(i, i + 1))) {
 				result++;
 			}
 		}
-		
+
 		return result;
 	}
 
