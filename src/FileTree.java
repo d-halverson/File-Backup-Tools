@@ -134,6 +134,12 @@ public class FileTree {
 		return false;
 	}
 	
+	/**
+	 * Finds extra files that are in tree2 and not in this tree.
+	 * 
+	 * @param tree2 the tree being compared to this tree
+	 * @return returns an array list of File objects that are the extra files that were found.
+	 */
 	public ArrayList<File> findExtraFiles(FileTree tree2) {
 		ArrayList<Node> nodesToTraverse = (ArrayList<Node>) tree2.root.getChildren().clone();
 		FileNode tempFile;
