@@ -7,17 +7,69 @@ public class BackupTools {
 	private final static Scanner input = new Scanner(System.in);
 
 	public static void main(String[] args) {
-		
+		//generating FileTrees
 		FileTree source = null; //getting source FileTree
 		System.out.print("Please input a \"source\" path pointing a folder:");
-		setTreeFromInput(source);
+		source = setTreeFromInput();
+		System.out.println(source==null);
 
 		FileTree backup = null; //getting backup FileTree
 		System.out.print("Now input a \"backup\" path pointing to a folder:");
-		setTreeFromInput(backup);
-
+		backup = setTreeFromInput();
+		
+		//main command loop:
+		String userInput;
+		boolean loop = true;
+		while(loop) {
+			System.out.print("Enter a command (type help for a list of commands):");
+			userInput = input.nextLine();	
+			
+			if(userInput.equals("help")) {
+				System.out.println("Available commands: \"quit\", \"extra files\"");
+			}
+			else if(userInput.equals("quit") || userInput.equals("exit")){
+				System.out.println("Quiting...");
+				loop = false;
+			}
+			else if(userInput.equals("extra files")) {
+				extraFilesCommand(source, backup);
+			}
+			else {
+				System.out.println("Command not recognized. Please try again.");
+			}
+			System.out.println();
+		}
 		
 		input.close();
+	}
+	
+	/**
+	 * Called when the extra files command is entered
+	 * 
+	 * @param source the source filetree
+	 * @param backup the backup filetree
+	 */
+	private static void extraFilesCommand(FileTree source, FileTree backup) {
+		boolean loop = true;
+		String userInput;
+		
+		while(loop) {
+			System.out.println("Would you like to find extra files in the backup folder, or source?");
+			System.out.print("(Type \"backup\" or \"source\"):");
+			userInput = input.nextLine();
+			
+			if(userInput.equals("backup")) {
+				findExtraFilesOutput(source, backup);
+				loop = false;
+			}
+			else if(userInput.equals("source")) {
+				findExtraFilesOutput(backup, source);
+				loop = false;
+			}
+			else {
+				System.out.println("Command not recognized. Please try again.");
+			}
+		}
 	}
 	
 	/**
@@ -26,7 +78,7 @@ public class BackupTools {
 	 * @param source the source filetree
 	 * @param backup the backup filetree
 	 */
-	private static void findExtraFilesFront(FileTree source, FileTree backup) {
+	private static void findExtraFilesOutput(FileTree source, FileTree backup) {
 		System.out.println("\nChecking for extra files...");
 		ArrayList<File> extraFiles = source.findExtraFiles(backup);
 		System.out.println("Extra files found in \"" + 
@@ -60,12 +112,13 @@ public class BackupTools {
 	
 	/**
 	 * Continues a loop to get valid input from the user, and then uses that input to generate
-	 * a FileTree object and stores it in the parameter reference provided.
+	 * a FileTree object and return it.
 	 * 
-	 * @param tree where the FileTree generated will be stored.
+	 * @return returns the FileTree generated
 	 */
-	private static void setTreeFromInput(FileTree tree) {
+	private static FileTree setTreeFromInput() {
 		boolean failed = true;
+		FileTree tree = null;
 		
 		while (failed == true) {
 			try {
@@ -76,6 +129,8 @@ public class BackupTools {
 				failed = true;
 			}
 		}
+		
+		return tree;
 	}
 
 	/**
