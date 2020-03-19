@@ -1,5 +1,6 @@
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class BackupTools {
@@ -24,7 +25,7 @@ public class BackupTools {
 			userInput = input.nextLine();	
 			
 			if(userInput.equals("help")) {
-				System.out.println("Available commands: \"quit\", \"extra files\"");
+				System.out.println("Available commands: \"quit\", \"extra files\", \"search\"");
 			}
 			else if(userInput.equals("quit") || userInput.equals("exit")){
 				System.out.println("Quiting...");
@@ -32,6 +33,9 @@ public class BackupTools {
 			}
 			else if(userInput.equals("extra files")) {
 				extraFilesCommand(source, backup);
+			}
+			else if(userInput.equals("search")) {
+				searchCommand(source, backup);
 			}
 			else {
 				System.out.println("Command not recognized. Please try again.");
@@ -43,31 +47,88 @@ public class BackupTools {
 	}
 	
 	/**
+	 * Helper method that is called when executing the searchCommand. Prompts the user to ask which filtree to 
+	 * search in, and then asks for the filename to look for.
+	 * 
+	 * @param source the source FileTree
+	 * @param backup the backup FileTree.
+	 */
+	private static void searchCommand(FileTree source, FileTree backup) {
+		int srcBakAns = getUserInput("Would you like to search the source or backup? (Type \"source\" or \"backup\"):"
+				, new ArrayList<String>(Arrays.asList("source", "backup")));
+		System.out.print("Please enter the name of the file, including its extenstion: ");
+		String fileName = input.nextLine();
+		boolean found;
+		
+		if(srcBakAns == 0) {
+			System.out.println("Searching for the file: \""+fileName+"\" in the "
+					+ "folder: \""+source.getRoot().getPath().getName()+"\"...");
+			found = source.containsFileName(fileName);
+			if(found) {
+				System.out.println("Found!");
+			}
+			else {
+				System.out.println("Not found.");
+			}
+		}
+		else {
+			System.out.println("Searching for the file: \""+fileName+"\" in the "
+					+ "folder: \""+backup.getRoot().getPath().getName()+"\"...");
+			found = backup.containsFileName(fileName);
+			if(found) {
+				System.out.println("Found!");
+			}
+			else {
+				System.out.println("Not found.");
+			}
+		}
+		
+		
+	}
+	
+	/**
+	 * Private helper method for getting user input when asking a question. Returns an integer corresponding
+	 * to the index in which the answer was found in the list answers parameter.
+	 * 
+	 * Precondition: answers must be non empty and non null. 
+	 * 
+	 * @param prompt a String to prompt the user (the question)
+	 * @param answers list of acceptable answers to this question
+	 * @return Returns an integer corresponding to the index in which the answer was found in the list 
+	 * answers parameter.
+	 */
+	private static int getUserInput(String prompt, ArrayList<String> answers) {
+		String userInput;
+		
+		while(true) {
+			System.out.print(prompt);
+			userInput = input.nextLine();
+			
+			if(answers.contains(userInput)) {
+				return answers.indexOf(userInput);
+			}
+			else {
+				System.out.println("Command not recognized. Please try again.");
+			}
+		}
+	}
+	
+	/**
 	 * Called when the extra files command is entered
 	 * 
 	 * @param source the source filetree
 	 * @param backup the backup filetree
 	 */
 	private static void extraFilesCommand(FileTree source, FileTree backup) {
-		boolean loop = true;
-		String userInput;
+		int answer = getUserInput("Would you like to find extra files in the backup folder, or source?"
+				+ " (Type \\\"backup\\\" or \\\"source\\\"):", 
+				new ArrayList<String>(Arrays.asList("source", "backup")));
 		
-		while(loop) {
-			System.out.println("Would you like to find extra files in the backup folder, or source?");
-			System.out.print("(Type \"backup\" or \"source\"):");
-			userInput = input.nextLine();
-			
-			if(userInput.equals("backup")) {
-				findExtraFilesOutput(source, backup);
-				loop = false;
-			}
-			else if(userInput.equals("source")) {
-				findExtraFilesOutput(backup, source);
-				loop = false;
-			}
-			else {
-				System.out.println("Command not recognized. Please try again.");
-			}
+		if(answer==0) {
+			findExtraFilesOutput(backup, source);
+		}
+		else if(answer==1) {
+			findExtraFilesOutput(source, backup);
 		}
 	}
 	
