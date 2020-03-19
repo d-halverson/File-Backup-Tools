@@ -147,6 +147,52 @@ public class FileTree {
 
 		return false;
 	}
+	
+	/**
+	 * Another version of the contains method; this method searches for a FileNode that points to a file that 
+	 * has the same file name as the parameter fileName passed to this method. Does not worry about file size
+	 * unlike the contains() method.
+	 * 
+	 * @param fileName the String of the filename being searched for.
+	 * @return returns true if this fileName is found, false otherwise.
+	 * @throws IllegalArgumentException when file is null
+	 */
+	public boolean containsFileName(String fileName) {
+		if (fileName == null)
+			throw new IllegalArgumentException("file is null");
+
+		@SuppressWarnings("unchecked")
+		ArrayList<Node> nodesToTraverse = (ArrayList<Node>) this.root.getChildren().clone();
+		FolderNode temp;
+		FileNode temp2;
+
+		while (!nodesToTraverse.isEmpty() && nodesToTraverse != null) {
+			if (FolderNode.isFolderNode(nodesToTraverse.get(0))) {
+				//computing score and index and using it to add Folder's children:
+				int index;
+				temp = (FolderNode) nodesToTraverse.get(0);
+				if(compareStrings(temp.getPath().getName(), fileName) >= 3) {
+					index = 0;
+				}
+				else {
+					index = nodesToTraverse.size()-1;
+					if(index < 0)
+						index = 0;
+				}
+				nodesToTraverse.remove(0);
+				addChildrenList(nodesToTraverse, temp.getChildren(), index);
+				
+			} else { // FileNode was found
+				temp2 = (FileNode) nodesToTraverse.get(0);
+				if (temp2.getPath().getName().equals(fileName)) {
+					return true;
+				}
+				nodesToTraverse.remove(0);
+			}
+		}
+
+		return false;
+	}
 
 	/**
 	 * Private helper method that adds all of the Nodes in newChildren list to the
