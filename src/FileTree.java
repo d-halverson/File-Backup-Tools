@@ -113,6 +113,7 @@ public class FileTree {
 		if (file == null)
 			throw new IllegalArgumentException("file is null");
 
+		@SuppressWarnings("unchecked")
 		ArrayList<Node> nodesToTraverse = (ArrayList<Node>) this.root.getChildren().clone();
 		FolderNode temp;
 		FileNode temp2;
@@ -122,7 +123,8 @@ public class FileTree {
 				//computing score and index and using it to add Folder's children:
 				int index;
 				temp = (FolderNode) nodesToTraverse.get(0);
-				if(compareStrings(temp.getPath().getPath(), file.getPath().getPath()) >= 3) {
+				if(compareStrings(temp.getParentPathString(), temp.getPath().getName(), 
+						file.getParentPathString(), file.getPath().getName()) >= 3) {
 					index = 0;
 				}
 				else {
@@ -172,6 +174,7 @@ public class FileTree {
 	 *         were found.
 	 */
 	public ArrayList<File> findExtraFiles(FileTree tree2) {
+		@SuppressWarnings("unchecked")
 		ArrayList<Node> nodesToTraverse = (ArrayList<Node>) tree2.root.getChildren().clone();
 		FileNode tempFile;
 		ArrayList<File> extraFiles = new ArrayList<File>();
@@ -224,6 +227,20 @@ public class FileTree {
 		}
 
 		return result;
+	}
+	
+	/**
+	 * Overloaded version of the method: accepts parent strings of the first and second strings. These will
+	 * be used for an additional test of similarity.
+	 * 
+	 * @param firstParent parent string of first
+	 * @param first child string of firstParent
+	 * @param secondParent parent string of second
+	 * @param second child string of secondParent
+	 * @return returns an int score of similarity, 0 being the lowest possible score.
+	 */
+	public static int compareStrings(String firstParent, String first, String secondParent, String second) {
+		return compareStrings(first, second) + compareStrings(firstParent, secondParent);
 	}
 
 }
