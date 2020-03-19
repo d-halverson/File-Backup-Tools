@@ -130,6 +130,7 @@ public class FileTree {
 					if(index < 0)
 						index = 0;
 				}
+				nodesToTraverse.remove(0);
 				addChildrenList(nodesToTraverse, temp.getChildren(), index);
 				
 			} else { // FileNode was found
@@ -137,8 +138,9 @@ public class FileTree {
 				if (temp2.equals(file)) {
 					return true;
 				}
+				nodesToTraverse.remove(0);
 			}
-			nodesToTraverse.remove(0);
+			
 		}
 
 		return false;

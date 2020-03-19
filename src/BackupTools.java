@@ -11,7 +11,6 @@ public class BackupTools {
 		FileTree source = null; //getting source FileTree
 		System.out.print("Please input a \"source\" path pointing a folder:");
 		source = setTreeFromInput();
-		System.out.println(source==null);
 
 		FileTree backup = null; //getting backup FileTree
 		System.out.print("Now input a \"backup\" path pointing to a folder:");
