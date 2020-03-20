@@ -121,7 +121,7 @@ public class BackupTools {
 	 */
 	private static void extraFilesCommand(FileTree source, FileTree backup) {
 		int answer = getUserInput("Would you like to find extra files in the backup folder, or source?"
-				+ " (Type \\\"backup\\\" or \\\"source\\\"):", 
+				+ " (Type \"backup\" or \"source\"):", 
 				new ArrayList<String>(Arrays.asList("source", "backup")));
 		
 		if(answer==0) {
