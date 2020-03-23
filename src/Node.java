@@ -6,7 +6,7 @@
  * 
  * @author drewhalverson
  */
-public abstract class Node {
+public abstract class Node implements Comparable<Node> {
 
 	private int numOfChild = 0;
 	private File path;
@@ -46,6 +46,16 @@ public abstract class Node {
 		this.path = path;
 		this.parent = parent;
 	}
+	
+	/**
+	 * CompareTo method that implements Comparable interface by comparing the files' string names
+	 * @param other the other Node that is being compared to this node.
+	 * @return returns a negative number if this Node is earlier alphabetically than the other node
+	 */
+	@Override
+	public int compareTo(Node other) {
+		return this.getPath().getName().compareToIgnoreCase(other.getPath().getName());
+	}
 
 	/**
 	 * Accessor method for the parent instance variable.
@@ -59,10 +69,27 @@ public abstract class Node {
 	/**
 	 * Accessor method for the File stored in the parent Node instance field.
 	 * 
+	 * Precondition: only call when parent is not null.
+	 * 
 	 * @return returns the File object stored in parent.
 	 */
-	public File getParentPath() {
+	private File getParentPath() {
 		return getParent().getPath();
+	}
+	
+	/**
+	 * Accessor method that returns a string of the name of this node's parent. Returns a zero length string
+	 * if this node's parent is null.
+	 * 
+	 * @return returns the filename of this node's parent string.
+	 */
+	public String getParentPathString() {
+		if(getParent()==null) {
+			return "";
+		}
+		else {
+			return getParentPath().getName();
+		}
 	}
 
 	/**

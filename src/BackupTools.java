@@ -1,40 +1,144 @@
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class BackupTools {
+	
+	private final static Scanner input = new Scanner(System.in);
 
 	public static void main(String[] args) {
-		final Scanner input = new Scanner(System.in);
-		FileTree source = null;
-		FileTree backup = null;
-		boolean failed = true;
+		//generating FileTrees
+		FileTree source = null; //getting source FileTree
+		System.out.print("Please input a \"source\" path pointing a folder:");
+		source = setTreeFromInput();
 
-		// getting source filetree
-		while (failed == true) {
-			System.out.print("Please input a \"source\" path pointing a folder:");
-			try {
-				source = new FileTree(input.nextLine());
-				failed = false;
-			} catch (IllegalArgumentException e) {
-				System.out.println("Error: " + e.getMessage() + " Please try again.");
-				failed = true;
+		FileTree backup = null; //getting backup FileTree
+		System.out.print("Now input a \"backup\" path pointing to a folder:");
+		backup = setTreeFromInput();
+		
+		//main command loop:
+		String userInput;
+		boolean loop = true;
+		while(loop) {
+			System.out.print("Enter a command (type help for a list of commands):");
+			userInput = input.nextLine();	
+			
+			if(userInput.equals("help")) {
+				System.out.println("Available commands: \"quit\", \"extra files\", \"search\"");
+			}
+			else if(userInput.equals("quit") || userInput.equals("exit")){
+				System.out.println("Quiting...");
+				loop = false;
+			}
+			else if(userInput.equals("extra files")) {
+				extraFilesCommand(source, backup);
+			}
+			else if(userInput.equals("search")) {
+				searchCommand(source, backup);
+			}
+			else {
+				System.out.println("Command not recognized. Please try again.");
+			}
+			System.out.println();
+		}
+		
+		input.close();
+	}
+	
+	/**
+	 * Helper method that is called when executing the searchCommand. Prompts the user to ask which filtree to 
+	 * search in, and then asks for the filename to look for.
+	 * 
+	 * @param source the source FileTree
+	 * @param backup the backup FileTree.
+	 */
+	private static void searchCommand(FileTree source, FileTree backup) {
+		int srcBakAns = getUserInput("Would you like to search the source or backup? (Type \"source\" or \"backup\"):"
+				, new ArrayList<String>(Arrays.asList("source", "backup")));
+		System.out.print("Please enter the name of the file, including its extenstion: ");
+		String fileName = input.nextLine();
+		boolean found;
+		
+		if(srcBakAns == 0) {
+			System.out.println("Searching for the file: \""+fileName+"\" in the "
+					+ "folder: \""+source.getRoot().getPath().getName()+"\"...");
+			found = source.containsFileName(fileName);
+			if(found) {
+				System.out.println("Found!");
+			}
+			else {
+				System.out.println("Not found.");
 			}
 		}
-
-		// getting backup filetree
-		failed = true;
-		while (failed == true) {
-			System.out.print("Now input a \"backup\" path pointing to a folder:");
-			try {
-				backup = new FileTree(input.nextLine());
-				failed = false;
-			} catch (IllegalArgumentException e) {
-				System.out.println("Error: " + e.getMessage() + " Please try again.");
-				failed = true;
+		else {
+			System.out.println("Searching for the file: \""+fileName+"\" in the "
+					+ "folder: \""+backup.getRoot().getPath().getName()+"\"...");
+			found = backup.containsFileName(fileName);
+			if(found) {
+				System.out.println("Found!");
+			}
+			else {
+				System.out.println("Not found.");
 			}
 		}
-
+		
+		
+	}
+	
+	/**
+	 * Private helper method for getting user input when asking a question. Returns an integer corresponding
+	 * to the index in which the answer was found in the list answers parameter.
+	 * 
+	 * Precondition: answers must be non empty and non null. 
+	 * 
+	 * @param prompt a String to prompt the user (the question)
+	 * @param answers list of acceptable answers to this question
+	 * @return Returns an integer corresponding to the index in which the answer was found in the list 
+	 * answers parameter.
+	 */
+	private static int getUserInput(String prompt, ArrayList<String> answers) {
+		String userInput;
+		
+		while(true) {
+			System.out.print(prompt);
+			userInput = input.nextLine();
+			
+			if(answers.contains(userInput)) {
+				return answers.indexOf(userInput);
+			}
+			else {
+				System.out.println("Command not recognized. Please try again.");
+			}
+		}
+	}
+	
+	/**
+	 * Called when the extra files command is entered
+	 * 
+	 * @param source the source filetree
+	 * @param backup the backup filetree
+	 */
+	private static void extraFilesCommand(FileTree source, FileTree backup) {
+		int answer = getUserInput("Would you like to find extra files in the backup folder, or source?"
+				+ " (Type \"backup\" or \"source\"):", 
+				new ArrayList<String>(Arrays.asList("source", "backup")));
+		
+		if(answer==0) {
+			findExtraFilesOutput(backup, source);
+		}
+		else if(answer==1) {
+			findExtraFilesOutput(source, backup);
+		}
+	}
+	
+	/**
+	 * Called when the user wants to find extra files in the backup fileTree.
+	 * 
+	 * @param source the source filetree
+	 * @param backup the backup filetree
+	 */
+	private static void findExtraFilesOutput(FileTree source, FileTree backup) {
 		System.out.println("\nChecking for extra files...");
 		ArrayList<File> extraFiles = source.findExtraFiles(backup);
 		System.out.println("Extra files found in \"" + 
@@ -51,8 +155,8 @@ public class BackupTools {
 			System.out.print("Please type yes, y, no, or n:");
 			tempInput = input.nextLine();
 		}
-		input.close();
 		
+		//deleting
 		if(tempInput.equalsIgnoreCase("yes") || tempInput.equalsIgnoreCase("y")) {
 			boolean success = deleteFiles(extraFiles);
 			
@@ -64,7 +168,29 @@ public class BackupTools {
 		else if(tempInput.equalsIgnoreCase("no") || tempInput.equalsIgnoreCase("n")) {
 			System.out.println("Ok, not deleting.");
 		}
-			
+	}
+	
+	/**
+	 * Continues a loop to get valid input from the user, and then uses that input to generate
+	 * a FileTree object and return it.
+	 * 
+	 * @return returns the FileTree generated
+	 */
+	private static FileTree setTreeFromInput() {
+		boolean failed = true;
+		FileTree tree = null;
+		
+		while (failed == true) {
+			try {
+				tree = new FileTree(input.nextLine());
+				failed = false;
+			} catch (IllegalArgumentException e) {
+				System.out.println("Error: " + e.getMessage() + " Please try again.");
+				failed = true;
+			}
+		}
+		
+		return tree;
 	}
 
 	/**
