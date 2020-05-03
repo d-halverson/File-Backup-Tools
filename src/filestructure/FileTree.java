@@ -262,7 +262,7 @@ public class FileTree {
 	 * @param second the second string being compared
 	 * @return a score of similarity, 0 being the lowest possible score.
 	 */
-	public static int compareStrings(String first, String second) {
+	protected static int compareStrings(String first, String second) {
 		int result = 0;
 
 		if (Math.abs(first.length() - second.length()) <= 2) // if strings are the same length +-2
@@ -287,7 +287,7 @@ public class FileTree {
 	 * @param second child string of secondParent
 	 * @return returns an int score of similarity, 0 being the lowest possible score.
 	 */
-	public static int compareStrings(String firstParent, String first, String secondParent, String second) {
+	protected static int compareStrings(String firstParent, String first, String secondParent, String second) {
 		return compareStrings(first, second) + compareStrings(firstParent, secondParent);
 	}
 
