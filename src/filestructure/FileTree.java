@@ -1,3 +1,5 @@
+package filestructure;
+
 import java.io.File;
 import java.util.ArrayList;
 
@@ -244,7 +246,7 @@ public class FileTree {
 	 * 
 	 * @return the root of this tree.
 	 */
-	protected FolderNode getRoot() {
+	public FolderNode getRoot() {
 		return this.root;
 	}
 

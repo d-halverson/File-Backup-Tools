@@ -1,4 +1,6 @@
- import java.io.File;
+package filestructure;
+
+import java.io.File;
 
 /**
  * This abstract class represents a Node in general that will either contain a

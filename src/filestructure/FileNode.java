@@ -1,3 +1,5 @@
+package filestructure;
+
 import java.io.File;
 
 /**
