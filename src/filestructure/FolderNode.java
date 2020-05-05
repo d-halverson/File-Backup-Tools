@@ -63,7 +63,7 @@ public class FolderNode extends Node {
 	 * 
 	 * @param node the object to be added to the list.
 	 */
-	public void addChild(Node node) {
+	protected void addChild(Node node) {
 		this.children.add(node);
 		incrNumOfChild();
 	}
@@ -98,6 +98,39 @@ public class FolderNode extends Node {
 			return true;
 		else
 			return false;
+	}
+	
+	/**
+	 * Equals method for comparing folders. Two FolderNodes are equal if:
+	 * -They have the same parent String
+	 * -They have the same name String
+	 * -All of the children are the same
+	 * 
+	 * @param other the other FolderNode being compared to this one.
+	 * @return boolean true if the two FolderNodes are equal, false otherwise
+	 */
+	public boolean equals(FolderNode other) {
+		boolean parents = this.getParentPathString().equals(other.getParentPathString());
+		boolean name = this.getPath().getName().equals(other.getPath().getName());
+		
+		boolean children = true;
+		//iterate through this node's children, make sure each of them is somewhere in other's children
+		for(int i=0; i<this.getChildren().size(); i++) {
+			if(!other.getChildren().contains(this.getChildren().get(i))) {
+				children = false;
+			}
+		}
+		
+		if(children) { //if children is false already, there is no reason to go through this loop
+			//iterate through other node's children, make sure this node has them all
+			for(int i=0; i<other.getChildren().size(); i++) {
+				if(!this.getChildren().contains(other.getChildren().get(i))) {
+					children = false;
+				}
+			}
+		}
+		
+		return parents && name && children;
 	}
 
 }
