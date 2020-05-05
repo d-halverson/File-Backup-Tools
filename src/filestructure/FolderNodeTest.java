@@ -54,6 +54,16 @@ class FolderNodeTest {
 		assertFalse(AppleTree1.equals(AppleTree2));
 		assertFalse(AppleTree1.equals(AppleTree2WithTree1ParentNode));
 	}
+	
+	/**
+	 * Tests the contains() method. 
+	 */
+	@Test
+	void test002_contains() {
+		assertTrue(AppleTree1.contains(madison));
+		assertFalse(AppleTree1.contains(doggy));
+		assertFalse(tree1Folder.contains(madison)); //tree1 does not have madison in the immediate folder contents
+	}
 
 
 }
