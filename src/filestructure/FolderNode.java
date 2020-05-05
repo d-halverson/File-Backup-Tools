@@ -87,6 +87,31 @@ public class FolderNode extends Node {
 	public boolean contains(FileNode file) {
 		return this.getChildren().contains(file);
 	}
+	
+	/**
+	 * Checks to see if if folder parameter is somewhere in the immediate contents
+	 * of this folder. Only checks to see if a folder with the same name is in this
+	 * folder, and nothing else (See equalsName()).
+	 * 
+	 * @param folder the other folder being searched for.
+	 * @return returns true if this folder has a folder in its children with the same
+	 * name as folder parameter, false otherwise.
+	 */
+	public boolean contains(FolderNode folder) {
+		Node curNode; 
+		
+		for(int i=0; i<this.getChildren().size(); i++) {
+			curNode = this.getChildren().get(i);
+			
+			if(FolderNode.isFolderNode(curNode)) {
+				if(((FolderNode)curNode).equalsName(folder)) {
+					return true;
+				}
+			}
+		}
+		
+		return false; //if true wasn't already returned, folder wasn't found.
+	}
 
 	/**
 	 * Increases the number of children instance field by one, used when adding a
@@ -146,6 +171,17 @@ public class FolderNode extends Node {
 		}
 
 		return parents && name && children;
+	}
+	
+	/**
+	 * Equals method that only checks to see if both folders have the same name,
+	 * and NOTHING else.
+	 * 
+	 * @param other the other folder being checked.
+	 * @return true if this folder has the same String name as the other folder.
+	 */
+	public boolean equalsName(FolderNode other) {
+		return this.getPath().getName().equals(other.getPath().getName());
 	}
 
 }

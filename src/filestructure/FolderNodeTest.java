@@ -59,11 +59,18 @@ class FolderNodeTest {
 	 * Tests the contains() method. 
 	 */
 	@Test
-	void test002_contains() {
+	void test002_containsFile() {
 		assertTrue(AppleTree1.contains(madison));
 		assertFalse(AppleTree1.contains(doggy));
 		assertFalse(tree1Folder.contains(madison)); //tree1 does not have madison in the immediate folder contents
 	}
 
-
+	/**
+	 * Tests the contains() method. 
+	 */
+	@Test
+	void test003_containsFolder() {
+		assertFalse(AppleTree1.contains(tree1Folder));
+		assertTrue(tree1.getRoot().contains(AppleTree1)); //tree1 does not have madison in the immediate folder contents
+	}
 }
