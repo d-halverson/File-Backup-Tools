@@ -3,3 +3,5 @@
 
 # empty files to make empty folders show up for testing.
 empty.txt
+tree2/.DS_Store
+tree1/.DS_Store
