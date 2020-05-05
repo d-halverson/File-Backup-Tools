@@ -6,7 +6,7 @@ The first version of what I am calling "Smart Traversal" has now been merged int
 ## Information on running in Terminal: 
 - Install latest version of JDK from Oracle's website
 - Change your working directory to be in the bin folder of this project
-- Run the command: ```java BackupTools```
+- Run the command: ```java ui.BackupTools```
 - Follow onscreen instructions. 
 
 ## Current commands available to the user:
