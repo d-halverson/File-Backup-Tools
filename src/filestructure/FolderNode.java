@@ -85,7 +85,18 @@ public class FolderNode extends Node {
 	 *         false otherwise.
 	 */
 	public boolean contains(FileNode file) {
-		return this.getChildren().contains(file);
+		Node temp;
+		
+		for(int i=0; i<this.getChildren().size(); i++) {
+			temp = this.getChildren().get(i);
+			if(!FolderNode.isFolderNode(temp)) {
+				if(file.equals((FileNode)temp)) {
+					return true;
+				}
+			}
+		}
+		
+		return false;
 	}
 	
 	/**
@@ -129,6 +140,10 @@ public class FolderNode extends Node {
 	 * @return returns true if node is a FolderNode object.
 	 */
 	public static boolean isFolderNode(Node node) {
+		if(node == null) {
+			return false;
+		}
+		
 		FolderNode temp = new FolderNode("Hi", null);
 		if (temp.getClass() == node.getClass())
 			return true;
