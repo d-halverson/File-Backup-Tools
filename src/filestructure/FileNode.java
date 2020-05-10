@@ -49,7 +49,7 @@ public class FileNode extends Node {
 		} else
 			return true;
 	}
-
+	
 	/**
 	 * Another option for an equals method that accepts File object as input rather
 	 * than FileNode. Simply calls the other version of the equals method and passes
@@ -60,5 +60,46 @@ public class FileNode extends Node {
 	 */
 	public boolean equals(File file) {
 		return this.equals(new FileNode(file, null));
+	}
+
+	/**
+	 * Overrides the Object class's equals() method, checks to see if obj is a FileNode
+	 * and is equal to this FileNode.
+	 * 
+	 * @param obj Object being compared
+	 * @return returns true if objects are equal, false otherwise.
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if(!FileNode.isFileNode(obj))
+			return false;
+		
+		return this.equals((FileNode)obj);
+	}
+	
+	/**
+	 * Returns a hashCode based on this FileNode's name and the File's size.
+	 */
+	@Override
+	public int hashCode() {
+		return (int) (this.getPath().getPath().hashCode() + this.getPath().length());
+	}
+	
+	/**
+	 * Checks to see if obj param is a FileNode object.
+	 * 
+	 * @param obj the object being checked.
+	 * @return True if obj is a FileNode, false otherwise;
+	 */
+	public static boolean isFileNode(Object obj) {
+		if(obj==null) {
+			return false;
+		}
+		
+		FileNode temp = new FileNode("Hi", null);
+		if (temp.getClass() == obj.getClass())
+			return true;
+		else
+			return false;
 	}
 }
