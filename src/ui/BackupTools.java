@@ -96,7 +96,7 @@ public class BackupTools {
 	 * Precondition: answers must be non empty and non null. 
 	 * 
 	 * @param prompt a String to prompt the user (the question)
-	 * @param answers list of acceptable answers to this question
+	 * @param answers a list of acceptable answers to this question
 	 * @return Returns an integer corresponding to the index in which the answer was found in the list 
 	 * answers parameter.
 	 */
