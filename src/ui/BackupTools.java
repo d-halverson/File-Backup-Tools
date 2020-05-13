@@ -3,6 +3,7 @@ package ui;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 import filestructure.*;
 
@@ -34,7 +35,7 @@ public class BackupTools {
 			userInput = input.nextLine();
 
 			if (userInput.equals("help")) {
-				System.out.println("Available commands: \"quit\", \"extra files\", \"search\"");
+				System.out.println("Available commands: \"quit\", \"extra files\", \"search\", \"duplicate files\"");
 			} else if (userInput.equals("quit") || userInput.equals("exit")) {
 				System.out.println("Quiting...");
 				loop = false;
@@ -42,6 +43,8 @@ public class BackupTools {
 				extraFilesCommand();
 			} else if (userInput.equals("search")) {
 				searchCommand();
+			} else if (userInput.equals("duplicate files")) {
+				duplicateFilesCommand();
 			} else {
 				System.out.println("Command not recognized. Please try again.");
 			}
@@ -111,6 +114,143 @@ public class BackupTools {
 				return answers.indexOf(userInput);
 			} else {
 				System.out.println("Command not recognized. Please try again.");
+			}
+		}
+	}
+
+	/**
+	 * Command to handle duplicate files command input.
+	 */
+	private static void duplicateFilesCommand() {
+		int answer = getUserInput(
+				"Would you like to find duplicate files in the backup folder, or source?"
+						+ " (Type \"backup\" or \"source\"):",
+				new ArrayList<String>(Arrays.asList("source", "backup")));
+
+		if (answer == 0) { // source
+			duplicateFilesOutput(source, backup);
+		} else if (answer == 1) { // backup
+			duplicateFilesOutput(backup, source);
+		}
+	}
+
+	/**
+	 * Long output and user input handling of the duplicate files command.
+	 * 
+	 * @param tree      the tree duplicate files are being searched for in
+	 * @param otherTree a tree used for as reference in the findDuplicateFiles()
+	 *                  method.
+	 */
+	private static void duplicateFilesOutput(FileTree tree, FileTree otherTree) {
+		System.out.println("\nSearching for duplicate files in \"" + tree.getRoot().getPath().getName() + "\"");
+		ArrayList<File> duplicateFiles = tree.findDuplicateFiles(otherTree);
+
+		if (duplicateFiles.size() == 0) {
+			System.out.println("None found!");
+		} else {
+			System.out.println("Duplicate files found in \"" + tree.getRoot().getPath().getName() + "\":");
+			utility.printArray(duplicateFiles);
+
+			ArrayList<File> toBeDeleted = new ArrayList<File>();
+
+			// userInput (getUserInput is not complex enough for handling this)
+			boolean done = false;
+			String userInput;
+			while (!done) {
+				System.out.println(
+						"\nDo you want all of these files to be deleted? (Type \"delete all\" to delete all files.)");
+				System.out.println(
+						"To view the path a specific file, type \"v\" followed by the number that precedes the file name.");
+				System.out.println("To manually select files to be deleted, type the number preceding the file.");
+				System.out.println(
+						"When you are done selecting files, or do not want to delete any, type \"done\" (you will be displayed your selection before they are deleted).");
+				userInput = input.nextLine();
+
+				if (userInput.equals("delete all")) {
+					boolean success = utility.deleteFiles(duplicateFiles);
+
+					if (success)
+						System.out.println("All files successfully deleted.");
+					else
+						System.out.println("Not all files were successfully deleted.");
+					done = true;
+				} else if (userInput.equals("done")) {
+					doubleCheckDeletion(toBeDeleted);
+					done = true;
+				} else {
+					if (userInput.length() > 0 && userInput.substring(0, 1).equals("v")) {
+						try {
+							userInput = userInput.substring(1);
+							int indexToView = Integer.parseInt(userInput);
+							indexToView--;
+							if (indexToView < duplicateFiles.size() && indexToView >= 0) { // if valid index
+								File file = duplicateFiles.get(indexToView);
+								System.out.println("\"" + file.getName() + "\" path: " + file.getPath());
+							} else
+								System.out.println(
+										"Command not recognized. Please try again. (If you are entering a number, make sure it is in valid range.)");
+						} catch (NumberFormatException e) {
+							// this just means a correct number wasn't entered, continue to command not
+							// recognized
+							System.out.println(
+									"Command not recognized. Please try again. (If you are entering a number, make sure it is in valid range.)");
+						}
+					}
+
+					else {
+						try {
+							int indexToDel = Integer.parseInt(userInput);
+							indexToDel--;
+							if (indexToDel < duplicateFiles.size() && indexToDel >= 0) { // if valid index
+								toBeDeleted.add(duplicateFiles.get(indexToDel));
+								System.out.println(duplicateFiles.get(indexToDel).getName()
+										+ " has been added to the deletion list.");
+								duplicateFiles.remove(indexToDel);
+							} else
+								System.out.println(
+										"Command not recognized. Please try again. (If you are entering a number, make sure it is in valid range.)");
+						} catch (NumberFormatException e) {
+							// this just means a correct number wasn't entered, continue to command not
+							// recognized
+							System.out.println(
+									"Command not recognized. Please try again. (If you are entering a number, make sure it is in valid range.)");
+						}
+					}
+				}
+			}
+		}
+	}
+
+	/**
+	 * Prints the toBeDeleted files, and then asks the user if they want them to be
+	 * deleted.
+	 * 
+	 * @param toBeDeleted a list of files to be deleted.
+	 */
+	private static void doubleCheckDeletion(List<File> toBeDeleted) {
+		if (toBeDeleted.size() > 0) {
+
+			System.out.println("Files to be deleted:");
+			utility.printArray(toBeDeleted);
+			System.out.print("Do you want to delete these files? Type Yes/No:");
+
+			String tempInput = input.nextLine();
+			while (!(tempInput.equalsIgnoreCase("y") || tempInput.equalsIgnoreCase("n")
+					|| tempInput.equalsIgnoreCase("yes") || tempInput.equalsIgnoreCase("no"))) {
+				System.out.print("Please type yes, y, no, or n:");
+				tempInput = input.nextLine();
+			}
+
+			// deleting
+			if (tempInput.equalsIgnoreCase("yes") || tempInput.equalsIgnoreCase("y")) {
+				boolean success = utility.deleteFiles(toBeDeleted);
+
+				if (success)
+					System.out.println("All files successfully deleted.");
+				else
+					System.out.println("Not all files were successfully deleted.");
+			} else if (tempInput.equalsIgnoreCase("no") || tempInput.equalsIgnoreCase("n")) {
+				System.out.println("Ok, not deleting.");
 			}
 		}
 	}
