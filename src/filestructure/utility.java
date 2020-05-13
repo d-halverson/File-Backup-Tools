@@ -13,7 +13,7 @@ public class utility {
 	 */
 	public static void printArray(List<File> list) {
 		for (int i = 0; i < list.size(); i++) {
-			System.out.println(i + ". " + list.get(i).getName());
+			System.out.println(i+1 + ". " + list.get(i).getName());
 		}
 	}
 
