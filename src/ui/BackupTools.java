@@ -1,12 +1,15 @@
 package ui;
 
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 import filestructure.*;
 
+/**
+ * This class handles user input and calls appropriate methods in the rest of the project.
+ * @author drewhalverson
+ */
 public class BackupTools {
 	
 	private final static Scanner input = new Scanner(System.in);
