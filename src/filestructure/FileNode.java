@@ -82,7 +82,7 @@ public class FileNode extends Node {
 	 */
 	@Override
 	public int hashCode() {
-		return (int) (this.getPath().getPath().hashCode() + this.getPath().length());
+		return (int) (this.getPath().getName().hashCode() + this.getPath().length());
 	}
 	
 	/**
