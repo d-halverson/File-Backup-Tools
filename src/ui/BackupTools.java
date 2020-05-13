@@ -1,5 +1,6 @@
 package ui;
 
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -146,7 +147,7 @@ public class BackupTools {
 		ArrayList<File> extraFiles = source.findExtraFiles(backup);
 		System.out.println("Extra files found in \"" + 
 				backup.getRoot().getPath().getName() +"\":");
-		printArray(extraFiles);
+		filestructure.utility.printArray(extraFiles);
 
 		//asking if user wants files to be deleted.
 		System.out.print("\nWould you like these files to be deleted? Just for clarifation,"
@@ -161,7 +162,7 @@ public class BackupTools {
 		
 		//deleting
 		if(tempInput.equalsIgnoreCase("yes") || tempInput.equalsIgnoreCase("y")) {
-			boolean success = deleteFiles(extraFiles);
+			boolean success = filestructure.utility.deleteFiles(extraFiles);
 			
 			if(success)
 				System.out.println("All files successfully deleted.");
@@ -195,42 +196,4 @@ public class BackupTools {
 		
 		return tree;
 	}
-
-	/**
-	 * Prints an array of File objects line by line with a number before them
-	 * indicating which number in the list it is, starting at 1.
-	 * 
-	 * @param array the array to be printed
-	 */
-	private static void printArray(ArrayList<File> array) {
-		for (int i = 0; i < array.size(); i++) {
-			System.out.println(i + ". " + array.get(i).getName());
-		}
-	}
-
-	/**
-	 * Deletes the files that are referenced as File objects in the array formal
-	 * parameter.
-	 * 
-	 * 
-	 * @param array
-	 * @return returns true if all files were successfully deleted, false otherwise.
-	 */
-	private static boolean deleteFiles(ArrayList<File> array) {
-		boolean result = true;
-
-		for (int i = 0; i < array.size(); i++) {
-			try {
-				if (!array.get(i).delete()) // if file couldn't be deleted, set result to false.
-					result = false;
-			} catch (Exception e) {
-				System.out.println("Error: file \"" + array.get(i).getName() + 
-						"\" could not be deleted. Error message:" + e.getMessage());
-				result = false;
-			}
-		}
-
-		return result;
-	}
-
 }

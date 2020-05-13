@@ -262,7 +262,7 @@ public class FileTree {
 	 * otherTree will be left untouched. In the case that neither are in the same
 	 * place in the otherTree, then either file may be marked as duplicate.
 	 * 
-	 * -Note: ignores ".DS_Store" files from Mac systems.
+	 * -Note: ignores ".DS_Store" files from Mac systems.t o
 	 * 
 	 * @param otherTree another FileTree object to check if files are in the same
 	 *                  position as this one (see above) - null is acceptable
