@@ -13,14 +13,14 @@ import filestructure.*;
 public class BackupTools {
 	
 	private final static Scanner input = new Scanner(System.in);
+	private static FileTree source = null;
+	private static FileTree backup = null;
 
 	public static void main(String[] args) {
 		//generating FileTrees
-		FileTree source = null; //getting source FileTree
 		System.out.print("Please input a \"source\" path pointing a folder:");
 		source = setTreeFromInput();
 
-		FileTree backup = null; //getting backup FileTree
 		System.out.print("Now input a \"backup\" path pointing to a folder:");
 		backup = setTreeFromInput();
 		
@@ -39,10 +39,10 @@ public class BackupTools {
 				loop = false;
 			}
 			else if(userInput.equals("extra files")) {
-				extraFilesCommand(source, backup);
+				extraFilesCommand();
 			}
 			else if(userInput.equals("search")) {
-				searchCommand(source, backup);
+				searchCommand();
 			}
 			else {
 				System.out.println("Command not recognized. Please try again.");
@@ -60,7 +60,7 @@ public class BackupTools {
 	 * @param source the source FileTree
 	 * @param backup the backup FileTree.
 	 */
-	private static void searchCommand(FileTree source, FileTree backup) {
+	private static void searchCommand() {
 		int srcBakAns = getUserInput("Would you like to search the source or backup? (Type \"source\" or \"backup\"):"
 				, new ArrayList<String>(Arrays.asList("source", "backup")));
 		System.out.print("Please enter the name of the file, including its extenstion: ");
@@ -126,16 +126,16 @@ public class BackupTools {
 	 * @param source the source filetree
 	 * @param backup the backup filetree
 	 */
-	private static void extraFilesCommand(FileTree source, FileTree backup) {
+	private static void extraFilesCommand() {
 		int answer = getUserInput("Would you like to find extra files in the backup folder, or source?"
 				+ " (Type \"backup\" or \"source\"):", 
 				new ArrayList<String>(Arrays.asList("source", "backup")));
 		
 		if(answer==0) {
-			findExtraFilesOutput(backup, source);
+			findExtraFilesOutput();
 		}
 		else if(answer==1) {
-			findExtraFilesOutput(source, backup);
+			findExtraFilesOutput();
 		}
 	}
 	
@@ -145,12 +145,12 @@ public class BackupTools {
 	 * @param source the source filetree
 	 * @param backup the backup filetree
 	 */
-	private static void findExtraFilesOutput(FileTree source, FileTree backup) {
+	private static void findExtraFilesOutput() {
 		System.out.println("\nChecking for extra files...");
 		ArrayList<File> extraFiles = source.findExtraFiles(backup);
 		System.out.println("Extra files found in \"" + 
 				backup.getRoot().getPath().getName() +"\":");
-		filestructure.utility.printArray(extraFiles);
+		utility.printArray(extraFiles);
 
 		//asking if user wants files to be deleted.
 		System.out.print("\nWould you like these files to be deleted? Just for clarifation,"
@@ -165,7 +165,7 @@ public class BackupTools {
 		
 		//deleting
 		if(tempInput.equalsIgnoreCase("yes") || tempInput.equalsIgnoreCase("y")) {
-			boolean success = filestructure.utility.deleteFiles(extraFiles);
+			boolean success = utility.deleteFiles(extraFiles);
 			
 			if(success)
 				System.out.println("All files successfully deleted.");
@@ -199,4 +199,5 @@ public class BackupTools {
 		
 		return tree;
 	}
+	
 }
