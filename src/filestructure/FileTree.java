@@ -296,7 +296,7 @@ public class FileTree {
 							duplicates.add(temp2.getPath());
 						} else {
 							// if temp2 is in the same spot in otherTree, add File from seen
-							if (isFileAtPath(temp2, getPathAfterThisTree(temp2))) {
+							if (otherTree.isFileAtPath(temp2, getPathAfterThisTree(temp2))) {
 								duplicates.add(seen.get(temp2).getPath());
 							}
 							// else, add temp2
