@@ -12,8 +12,9 @@ The first version of what I am calling "Smart Traversal" has now been merged int
 ## Current commands available to the user:
 - ```help```: Prints a list of commands the user has available to them.
 - ```quit```: Stops execution of the program.
-- ```extra files```: Command for finding extra files in either the "source" or "backup" file directories.
+- ```extra files```: Command for finding extra files in either the "source" or "backup" file directories (read above for explanation of meaning of "extra files").
 - ```search```: Allows search for a specific filename specified by the user in either the source or backup directories.
+- ```duplicate files```: Command for finding duplicate files in either the "source" or "backup" file directories.
 
 ## Known Bugs:
 - If you try to give the root of a hard drive as a source or backup folder, the program will crash. Right now the only workaround is to put everything you want into a folder at the top of the drive and then point to that folder in the script.
