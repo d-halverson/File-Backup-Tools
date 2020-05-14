@@ -18,14 +18,18 @@ public class BackupTools {
 	private final static Scanner input = new Scanner(System.in);
 	private static FileTree source = null;
 	private static FileTree backup = null;
+	private static String sourceRoot;
+	private static String backupRoot;
 
 	public static void main(String[] args) {
 		// generating FileTrees
 		System.out.print("Please input a \"source\" path pointing a folder:");
 		source = setTreeFromInput();
+		sourceRoot = source.getRoot().getPath().getName();
 
 		System.out.print("Now input a \"backup\" path pointing to a folder:");
 		backup = setTreeFromInput();
+		backupRoot = backup.getRoot().getPath().getName();
 
 		// main command loop:
 		String userInput;
@@ -117,6 +121,16 @@ public class BackupTools {
 			}
 		}
 	}
+	
+	/**
+	 * Reloads FileTree objects based on stored root instance fields.
+	 * Called when files are deleted.
+	 */
+	private static void rebuild() {
+		System.out.println("Reloading files from source and backup folders...");
+		source = new FileTree(sourceRoot);
+		backup = new FileTree(backupRoot);
+	}
 
 	/**
 	 * Command to handle duplicate files command input.
@@ -127,11 +141,18 @@ public class BackupTools {
 						+ " (Type \"backup\" or \"source\"):",
 				new ArrayList<String>(Arrays.asList("source", "backup")));
 
+		boolean rebuild = false;
+		
 		if (answer == 0) { // source
-			duplicateFilesOutput(source, backup);
+			rebuild = duplicateFilesOutput(source, backup);
 		} else if (answer == 1) { // backup
-			duplicateFilesOutput(backup, source);
+			rebuild = duplicateFilesOutput(backup, source);
 		}
+	
+		if(rebuild) {
+			rebuild();
+		}
+			
 	}
 
 	/**
@@ -140,10 +161,12 @@ public class BackupTools {
 	 * @param tree      the tree duplicate files are being searched for in
 	 * @param otherTree a tree used for as reference in the findDuplicateFiles()
 	 *                  method.
+	 * @return true if filetrees need to be rebuilt (something was deleted), false otherwise
 	 */
-	private static void duplicateFilesOutput(FileTree tree, FileTree otherTree) {
+	private static boolean duplicateFilesOutput(FileTree tree, FileTree otherTree) {
 		System.out.println("\nSearching for duplicate files in \"" + tree.getRoot().getPath().getName() + "\"");
 		ArrayList<File> duplicateFiles = tree.findDuplicateFiles(otherTree);
+		boolean rebuild = false;
 
 		if (duplicateFiles.size() == 0) {
 			System.out.println("None found!");
@@ -173,9 +196,10 @@ public class BackupTools {
 						System.out.println("All files successfully deleted.");
 					else
 						System.out.println("Not all files were successfully deleted.");
+					rebuild = true;
 					done = true;
 				} else if (userInput.equals("done")) {
-					doubleCheckDeletion(toBeDeleted);
+					rebuild = doubleCheckDeletion(toBeDeleted);
 					done = true;
 				} else {
 					if (userInput.length() > 0 && userInput.substring(0, 1).equals("v")) {
@@ -219,6 +243,8 @@ public class BackupTools {
 				}
 			}
 		}
+		
+		return rebuild;
 	}
 
 	/**
@@ -226,8 +252,11 @@ public class BackupTools {
 	 * deleted.
 	 * 
 	 * @param toBeDeleted a list of files to be deleted.
+	 * @return true if files were deleted, false otherwise
 	 */
-	private static void doubleCheckDeletion(List<File> toBeDeleted) {
+	private static boolean doubleCheckDeletion(List<File> toBeDeleted) {
+		boolean deleted = false;
+		
 		if (toBeDeleted.size() > 0) {
 
 			System.out.println("Files to be deleted:");
@@ -244,15 +273,19 @@ public class BackupTools {
 			// deleting
 			if (tempInput.equalsIgnoreCase("yes") || tempInput.equalsIgnoreCase("y")) {
 				boolean success = utility.deleteFiles(toBeDeleted);
-
+				
 				if (success)
 					System.out.println("All files successfully deleted.");
 				else
 					System.out.println("Not all files were successfully deleted.");
+				deleted = true;
+				
 			} else if (tempInput.equalsIgnoreCase("no") || tempInput.equalsIgnoreCase("n")) {
 				System.out.println("Ok, not deleting.");
 			}
 		}
+		
+		return deleted;
 	}
 
 	/**
@@ -267,11 +300,15 @@ public class BackupTools {
 						+ " (Type \"backup\" or \"source\"):",
 				new ArrayList<String>(Arrays.asList("source", "backup")));
 
+		boolean rebuild = false;
 		if (answer == 0) {
-			findExtraFilesOutput(backup, source);
+			rebuild = findExtraFilesOutput(backup, source);
 		} else if (answer == 1) {
-			findExtraFilesOutput(source, backup);
+			rebuild = findExtraFilesOutput(source, backup);
 		}
+		
+		if(rebuild)
+			rebuild();
 	}
 
 	/**
@@ -279,8 +316,9 @@ public class BackupTools {
 	 * 
 	 * @param source the source filetree
 	 * @param backup the backup filetree
+	 * @return true if files were deleted, false otherwise
 	 */
-	private static void findExtraFilesOutput(FileTree source, FileTree backup) {
+	private static boolean findExtraFilesOutput(FileTree source, FileTree backup) {
 		System.out.println("\nChecking for extra files...");
 		ArrayList<File> extraFiles = source.findExtraFiles(backup);
 		System.out.println("Extra files found in \"" + backup.getRoot().getPath().getName() + "\":");
@@ -297,6 +335,7 @@ public class BackupTools {
 			tempInput = input.nextLine();
 		}
 
+		boolean deleted = false;
 		// deleting
 		if (tempInput.equalsIgnoreCase("yes") || tempInput.equalsIgnoreCase("y")) {
 			boolean success = utility.deleteFiles(extraFiles);
@@ -305,9 +344,12 @@ public class BackupTools {
 				System.out.println("All files successfully deleted.");
 			else
 				System.out.println("Not all files were successfully deleted.");
+			deleted = true;
 		} else if (tempInput.equalsIgnoreCase("no") || tempInput.equalsIgnoreCase("n")) {
 			System.out.println("Ok, not deleting.");
 		}
+		
+		return deleted;
 	}
 
 	/**
