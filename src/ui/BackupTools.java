@@ -25,11 +25,11 @@ public class BackupTools {
 		// generating FileTrees
 		System.out.print("Please input a \"source\" path pointing a folder:");
 		source = setTreeFromInput();
-		sourceRoot = source.getRoot().getPath().getName();
+		sourceRoot = source.getRoot().getPath().getPath();
 
 		System.out.print("Now input a \"backup\" path pointing to a folder:");
 		backup = setTreeFromInput();
-		backupRoot = backup.getRoot().getPath().getName();
+		backupRoot = backup.getRoot().getPath().getPath();
 
 		// main command loop:
 		String userInput;
@@ -172,7 +172,7 @@ public class BackupTools {
 			System.out.println("None found!");
 		} else {
 			System.out.println("Duplicate files found in \"" + tree.getRoot().getPath().getName() + "\":");
-			utility.printArray(duplicateFiles);
+			Utility.printArray(duplicateFiles);
 
 			ArrayList<File> toBeDeleted = new ArrayList<File>();
 
@@ -190,7 +190,7 @@ public class BackupTools {
 				userInput = input.nextLine();
 
 				if (userInput.equals("delete all")) {
-					boolean success = utility.deleteFiles(duplicateFiles);
+					boolean success = Utility.deleteFiles(duplicateFiles);
 
 					if (success)
 						System.out.println("All files successfully deleted.");
@@ -260,7 +260,7 @@ public class BackupTools {
 		if (toBeDeleted.size() > 0) {
 
 			System.out.println("Files to be deleted:");
-			utility.printArray(toBeDeleted);
+			Utility.printArray(toBeDeleted);
 			System.out.print("Do you want to delete these files? Type Yes/No:");
 
 			String tempInput = input.nextLine();
@@ -272,7 +272,7 @@ public class BackupTools {
 
 			// deleting
 			if (tempInput.equalsIgnoreCase("yes") || tempInput.equalsIgnoreCase("y")) {
-				boolean success = utility.deleteFiles(toBeDeleted);
+				boolean success = Utility.deleteFiles(toBeDeleted);
 				
 				if (success)
 					System.out.println("All files successfully deleted.");
@@ -322,7 +322,7 @@ public class BackupTools {
 		System.out.println("\nChecking for extra files...");
 		ArrayList<File> extraFiles = source.findExtraFiles(backup);
 		System.out.println("Extra files found in \"" + backup.getRoot().getPath().getName() + "\":");
-		utility.printArray(extraFiles);
+		Utility.printArray(extraFiles);
 
 		// asking if user wants files to be deleted.
 		System.out.print("\nWould you like these files to be deleted? Just for clarifation,"
@@ -338,7 +338,7 @@ public class BackupTools {
 		boolean deleted = false;
 		// deleting
 		if (tempInput.equalsIgnoreCase("yes") || tempInput.equalsIgnoreCase("y")) {
-			boolean success = utility.deleteFiles(extraFiles);
+			boolean success = Utility.deleteFiles(extraFiles);
 
 			if (success)
 				System.out.println("All files successfully deleted.");
