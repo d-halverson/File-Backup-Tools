@@ -1,9 +1,10 @@
 package filestructure;
 
 import java.io.File;
+import java.nio.file.Files;
 import java.util.List;
 
-public class utility {
+public class Utility {
 
 	/**
 	 * Prints an array of File objects line by line with a number before them
@@ -40,5 +41,22 @@ public class utility {
 		}
 
 		return result;
+	}
+	
+	/**
+	 * Copies the source File object to the path given in the dest File object.
+	 * 
+	 * @param source the File to be copied
+	 * @param dest contains the path to be copied to
+	 * @return returns true if the operation was successful, false otherwise.
+	 */
+	public static boolean copyFile(File source, File dest) {
+		try {
+			Files.copy(source.toPath(), dest.toPath());
+			return true;
+		}
+		catch(Exception e) {
+			return false;
+		}
 	}
 }
