@@ -226,10 +226,17 @@ public class BackupTools {
 							int indexToDel = Integer.parseInt(userInput);
 							indexToDel--;
 							if (indexToDel < duplicateFiles.size() && indexToDel >= 0) { // if valid index
-								toBeDeleted.add(duplicateFiles.get(indexToDel));
-								System.out.println(duplicateFiles.get(indexToDel).getName()
-										+ " has been added to the deletion list.");
-								duplicateFiles.remove(indexToDel);
+								File dupFile = duplicateFiles.get(indexToDel);
+								
+								if(toBeDeleted.contains(dupFile)) { //already has been selected to be deleted:
+									System.out.println(dupFile.getName() + " has already been added to the deletion list.");
+								}
+								else {
+									toBeDeleted.add(dupFile);
+									System.out.println(dupFile.getName()
+											+ " has been added to the deletion list.");
+								}
+
 							} else
 								System.out.println(
 										"Command not recognized. Please try again. (If you are entering a number, make sure it is in valid range.)");
