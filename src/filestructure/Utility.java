@@ -47,7 +47,10 @@ public class Utility {
 	 * Copies the source File object to the path given in the dest File object.
 	 * 
 	 * @param source the File to be copied
-	 * @param dest contains the path to be copied to
+	 * @param dest contains the path to be copied to (IMPORTANT: must include the name of the file
+	 * that you are copying at the end of this path, don't just pass a path to the folder that you want
+	 * the file to be copied into. 
+	 * 
 	 * @return returns true if the operation was successful, false otherwise.
 	 */
 	public static boolean copyFile(File source, File dest) {

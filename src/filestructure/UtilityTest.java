@@ -27,7 +27,7 @@ class UtilityTest {
 	 */
 	@Test
 	void test001_copyFiles() {
-		assertTrue(Utility.copyFile(copyTestFile, new File("/Users/drewhalverson/OneDrive - UW-Madison/Github/File_Backup_Tools/tree2/dog")));
+		assertTrue(Utility.copyFile(copyTestFile, new File("/Users/drewhalverson/OneDrive - UW-Madison/Github/File_Backup_Tools/tree2/dog/copyTestFile.rtf")));
 	}
 
 }
