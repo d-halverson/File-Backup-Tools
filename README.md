@@ -15,6 +15,7 @@ The first version of what I am calling "Smart Traversal" has now been merged int
 - ```extra files```: Command for finding extra files in either the "source" or "backup" file directories (read above for explanation of meaning of "extra files").
 - ```search```: Allows search for a specific filename specified by the user in either the source or backup directories.
 - ```duplicate files```: Command for finding duplicate files in either the "source" or "backup" file directories.
+- ```backup files```: Command for backing up files from the "source" to "backup" (files not found in backup will be copied from source).
 
 ## Known Bugs:
 - If you try to give the root of a hard drive as a source or backup folder, the program will crash. Right now the only workaround is to put everything you want into a folder at the top of the drive and then point to that folder in the script.
