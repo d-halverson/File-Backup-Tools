@@ -52,6 +52,9 @@ public class Utility {
 	 * @return returns true if the operation was successful, false otherwise.
 	 */
 	public static boolean copyFile(File source, File destFolder) {
+		//first: check does the destFolder path need to be constructed?
+		destFolder.mkdirs();
+	
 		try {
 			Files.copy(source.toPath(), new File(destFolder.getPath()+"/"+source.getName()).toPath());
 			return true;
