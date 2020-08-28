@@ -62,4 +62,37 @@ public class Utility {
 			return false;
 		}
 	}
+	
+	/**
+	 * Copies a list of Files to a list of Destinations. Plural form of copyFile method.
+	 * 
+	 * sources and dests lists MUST be associated: the first File in sources must correspond to the first
+	 * item in dests, and so on.
+	 * 
+	 * @param sources A list of File objects to be copied.
+	 * @param dests A list of File objects that contain the path that the corresponding source File objects will be
+	 * copied too. Must include the filename at the end of the path (Read copyFile method doc for more).
+	 * 
+	 * @return returns true if successful, false otherwise.
+	 */
+	public static boolean copyFiles(List<File> sources, List<File> dests) {
+		if(sources.size()!=dests.size()) {
+			throw new IllegalArgumentException("Sources and dests must be the same size, and items must be associated.");
+		}
+		
+		//converting lists to arrays for better efficiency (don't have to call .get() over and over).
+		File[] sourcesArray = (File[])sources.toArray();
+		File[] destsArray = (File[])dests.toArray();
+		
+		boolean success = false;
+		for(int i=0; i<sources.size(); i++) {
+			success = copyFile(sourcesArray[i], destsArray[i]);
+			
+			if(!success) {
+				return false;
+			}
+		}
+		
+		return success;
+	}
 }
