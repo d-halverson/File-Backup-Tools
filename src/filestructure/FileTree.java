@@ -233,7 +233,8 @@ public class FileTree {
 				nodesToTraverse.addAll(((FolderNode) nodesToTraverse.get(0)).getChildren());
 			} else { // FileNode was found
 				tempFile = (FileNode) nodesToTraverse.get(0);
-				if (!this.contains(tempFile)) { // if the file found in tree2 was not found in this tree, it is extra
+				if (!tempFile.getPath().getPath().equals(".DS_Store") && 
+						!this.contains(tempFile)) { // if the file found in tree2 was not found in this tree, it is extra
 					extraFiles.add(tempFile.getPath());
 				}
 			}
