@@ -39,7 +39,7 @@ public class BackupTools {
 			userInput = input.nextLine();
 
 			if (userInput.equals("help")) {
-				System.out.println("Available commands: \"quit\", \"extra files\", \"search\", \"duplicate files\"");
+				System.out.println("Available commands: \"quit\", \"extra files\", \"backup files\", \"search\", \"duplicate files\"");
 			} else if (userInput.equals("quit") || userInput.equals("exit")) {
 				System.out.println("Quiting...");
 				loop = false;
@@ -49,7 +49,11 @@ public class BackupTools {
 				searchCommand();
 			} else if (userInput.equals("duplicate files")) {
 				duplicateFilesCommand();
-			} else {
+			} 
+			else if(userInput.equals("backup files")) {
+				backupFilesCommand();
+			}
+			else {
 				System.out.println("Command not recognized. Please try again.");
 			}
 			System.out.println();
@@ -294,12 +298,55 @@ public class BackupTools {
 		
 		return deleted;
 	}
+	
+	/**
+	 * Called when backup files command is executed.
+	 * 
+	 * First searches for files that are in source but not the backup. Then, prompts the user if they want to copy
+	 * these files to the backup from the source. The files will be copied in the same folder path structure that they were found in
+	 * the source tree. Folders will be created if needed. 
+	 *
+	 */
+	private static void backupFilesCommand() {
+		System.out.println("Looking for files in source hard drive to copy to backup...");
+		ArrayList<File> toBackup = backup.findExtraFiles(source);
+		Utility.printArray(toBackup);
+		int ans = getUserInput("Do you want to backup these files to "+backup.getRoot().getPath().getPath()+"? (y/n)", new ArrayList<String>(Arrays.asList("y", "n")));
+		
+		if(ans==0) {
+			//constructing destination folders
+			ArrayList<File> destFolders = new ArrayList<File>();
+			String temp;
+			File curFile;
+			for(int i=0; i<toBackup.size(); i++) {
+				curFile = toBackup.get(i);
+				temp = curFile.getPath();
+				temp = temp.substring(temp.indexOf(source.getRoot().getPath().getPath())+source.getRoot().getPath().getPath().length(),
+						(temp.length() - curFile.getName().length()) );
+				if(temp.equals("/")) {
+					temp = "";
+				}
+				temp = backup.getRoot().getPath().getPath() + temp;
+				destFolders.add(new File(temp));
+			}
+		
+			boolean success = Utility.copyFiles(toBackup, destFolders);
+			if(success) {
+				System.out.println("Files were successfully copied");
+			}
+			else {
+				System.out.println("Error, files not copied.");
+			}
+		}
+		else if(ans==1) {
+			System.out.println("Ok, not copying...");
+		}
+	}
 
 	/**
 	 * Called when the extra files command is entered
 	 * 
-	 * @param source the source filetree
-	 * @param backup the backup filetree
+	 * Uses instance fields source and backup to pass as parameters to be able to switch the order around.
 	 */
 	private static void extraFilesCommand() {
 		int answer = getUserInput(
