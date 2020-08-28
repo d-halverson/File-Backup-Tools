@@ -81,12 +81,12 @@ public class Utility {
 		}
 		
 		//converting lists to arrays for better efficiency (don't have to call .get() over and over).
-		File[] sourcesArray = (File[])sources.toArray();
-		File[] destsArray = (File[])dests.toArray();
+		Object[] sourcesArray = sources.toArray();
+		Object[] destsArray = dests.toArray();
 		
 		boolean success = false;
 		for(int i=0; i<sources.size(); i++) {
-			success = copyFile(sourcesArray[i], destsArray[i]);
+			success = copyFile((File)sourcesArray[i], (File)destsArray[i]);
 			
 			if(!success) {
 				return false;
