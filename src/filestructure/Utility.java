@@ -47,15 +47,13 @@ public class Utility {
 	 * Copies the source File object to the path given in the dest File object.
 	 * 
 	 * @param source the File to be copied
-	 * @param dest contains the path to be copied to (IMPORTANT: must include the name of the file
-	 * that you are copying at the end of this path, don't just pass a path to the folder that you want
-	 * the file to be copied into. 
+	 * @param destFolder contains the path to be copied to (IMPORTANT: must just include a path to the folder to be copied to).
 	 * 
 	 * @return returns true if the operation was successful, false otherwise.
 	 */
-	public static boolean copyFile(File source, File dest) {
+	public static boolean copyFile(File source, File destFolder) {
 		try {
-			Files.copy(source.toPath(), dest.toPath());
+			Files.copy(source.toPath(), new File(destFolder.getPath()+"/"+source.getName()).toPath());
 			return true;
 		}
 		catch(Exception e) {
@@ -70,8 +68,8 @@ public class Utility {
 	 * item in dests, and so on.
 	 * 
 	 * @param sources A list of File objects to be copied.
-	 * @param dests A list of File objects that contain the path that the corresponding source File objects will be
-	 * copied too. Must include the filename at the end of the path (Read copyFile method doc for more).
+	 * @param dests A list of File objects that contain the path of folders that the corresponding source File objects will be
+	 * copied too. 
 	 * 
 	 * @return returns true if successful, false otherwise.
 	 */

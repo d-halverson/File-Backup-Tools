@@ -31,7 +31,7 @@ class UtilityTest {
 	 */
 	@Test
 	void test001_copyFile() {
-		assertTrue(Utility.copyFile(copyTestFile, new File("/Users/drewhalverson/OneDrive - UW-Madison/Github/File_Backup_Tools/tree2/dog/copyTestFile.rtf")));
+		assertTrue(Utility.copyFile(copyTestFile, new File("/Users/drewhalverson/OneDrive - UW-Madison/Github/File_Backup_Tools/tree2/dog/")));
 	}
 	
 	/**
@@ -45,8 +45,8 @@ class UtilityTest {
 		sources.add(copyTestFile);
 		sources.add(copyTestFile2);
 		
-		dests.add(new File(copyDestFolder.getPath().getPath()+"/"+copyTestFile.getName()));
-		dests.add(new File(copyDest2Folder.getPath().getPath()+"/"+copyTestFile2.getName()));
+		dests.add(new File(copyDestFolder.getPath().getPath()));
+		dests.add(new File(copyDest2Folder.getPath().getPath()));
 		
 		assertTrue(Utility.copyFiles(sources, dests));
 	}
